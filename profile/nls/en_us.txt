@@ -1,0 +1,30 @@
+# controller
+ND-powerwall-NAME = Tesla PowerWall
+ND-powerwall-ICON = Electricity
+CMD-ctl-DISCOVER-NAME = Re-Discover
+CMD-ctl-UPDATE_PROFILE-NAME = Update Profile
+CMD-ctl-REMOVE_NOTICES_ALL-NAME = Remove Notices
+CMD-ctl-DEBUG-NAME = Log Level
+
+ST-ctl-ST-NAME = NodeServer Online
+ST-ctl-CPW-NAME = Instant Power
+ST-ctl-CC-NAME = Total Current
+ST-ctl-CV-NAME = Average Voltage
+ST-ctl-GV0-NAME = Reactive Power
+ST-ctl-GV1-NAME = Apparent Power
+ST-ctl-GV2-NAME = Frequency
+ST-ctl-GV3-NAME = Energy Exported
+ST-ctl-GV4-NAME = Energy Imported
+ST-ctl-GV5-NAME = i a Current
+ST-ctl-GV6-NAME = i b Current
+ST-ctl-GV7-NAME = i c Current
+
+ND-meter-NAME = Meter 
+ND-meter-ICON = EnergyMonitor
+
+DBG-0 = Off
+DBG-10 = Debug
+DBG-20 = Info
+DBG-30 = Warning
+DBG-40 = Error
+DBG-50 = Critical

@@ -1,0 +1,42 @@
+<nodeDefs>
+  <nodeDef id="powerwall" nodeType="139" nls="ctl">
+    <editors />
+    <sts>
+      <st id="ST" editor="bool" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="DISCOVER" />
+        <cmd id="REMOVE_NOTICES_ALL" />
+        <cmd id="UPDATE_PROFILE" />
+		<cmd id="DEBUG">
+			<p id="" editor="DEBUG" init="GVP"/>
+		</cmd>
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+  <nodeDef id="meter" nodeType="139" nls="ctl">
+    <editors />
+    <sts>
+      <st id="CPW" editor="POWER" />
+      <st id="GV0" editor="POWER" />
+      <st id="GV1" editor="POWER" />
+      <st id="GV2" editor="ENERGY" />
+      <st id="GV3" editor="ENERGY" />
+      <st id="GV4" editor="FREQENCY" />
+      <st id="CV" editor="VOLT" />
+      <st id="CC" editor="AMP" />
+      <st id="GV5" editor="AMP" />
+      <st id="GV6" editor="AMP" />
+      <st id="GV7" editor="AMP" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+</nodeDefs>

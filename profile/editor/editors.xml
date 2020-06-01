@@ -1,0 +1,24 @@
+<editors>
+    <editor id="bool">
+        <range uom="2" subset="0,1" />
+    </editor>
+    <editor id="POWER">
+        <range uom="73" prec="3" />
+    </editor>
+    <editor id="ENERGY">
+        <range uom="119" prec="3" />
+    </editor>
+    <editor id="FREQENCY">
+        <range uom="90" min="0" max="120" prec="1" />
+    </editor>
+    <editor id="VOLT">
+        <range uom="72" min="0" max="500" prec="3" />
+    </editor>
+    <editor id="AMP">
+        <range uom="1" min="0" max="500" prec="3" />
+    </editor>
+	<editor id="DEBUG">
+		<range uom="25" subset="0,10,20,30,40,50" NLS="DBG" />
+	</editor>
+
+</editors>

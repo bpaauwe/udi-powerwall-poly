@@ -1,0 +1,20 @@
+{
+    "name": "Powerwall",
+    "docs": "https://github.com/bpaauwe/udi-powerwall-poly",
+    "type": "python3",
+    "executable": "powerwall.py",
+    "install": "install.sh",
+    "description": "Tesla PowerWall2 data",
+    "notice": "",
+    "shortPoll": "120",
+    "longPoll": "600",
+    "profile_version": "1.0.0",
+    "credits": [ {
+	"title": "Powerwall: A node server for Tesla PowerWall2 data",
+    	"author": "Bob Paauwe",
+    	"version": "1.0.0",
+    	"date": "June 30, 2020",
+    	"source": "https://github.com/bpaauwe/udi-powerwall-poly",
+	"license": "https://github.com/bpaauwe/udi-powerwall-poly/LICENSE"
+	} ]
+}

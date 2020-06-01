@@ -18,7 +18,7 @@ import re
 import json
 import node_funcs
 from datetime import timedelta
-from node import meter
+from nodes import meter
 
 LOGGER = polyinterface.LOGGER
 

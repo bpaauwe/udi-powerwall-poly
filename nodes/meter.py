@@ -68,7 +68,4 @@ class MeterNode(polyinterface.Node):
             self.update_driver('GV6', data['i_b_current'], force, prec=3)
         if 'i_c_current' in data:
             self.update_driver('GV7', data['i_c_current'], force, prec=3)
-        
-        except Exception as e:
-            LOGGER.error('Meter: ' + str(e))
 

@@ -5,8 +5,10 @@ CMD-ctl-DISCOVER-NAME = Re-Discover
 CMD-ctl-UPDATE_PROFILE-NAME = Update Profile
 CMD-ctl-REMOVE_NOTICES_ALL-NAME = Remove Notices
 CMD-ctl-DEBUG-NAME = Log Level
+CMD-ctl-OPERATION-NAME = Operation Mode
 
 ST-ctl-ST-NAME = NodeServer Online
+ST-ctl-GV8-NAME = Operation Mode
 ST-ctl-CPW-NAME = Instant Power
 ST-ctl-CC-NAME = Total Current
 ST-ctl-CV-NAME = Average Voltage
@@ -28,3 +30,8 @@ DBG-20 = Info
 DBG-30 = Warning
 DBG-40 = Error
 DBG-50 = Critical
+
+MODE-0 = Self Consumption
+MODE-1 = Backup
+MODE-2 = Autonomous
+MODE-3 = Scheduler

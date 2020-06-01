@@ -3,6 +3,7 @@
     <editors />
     <sts>
       <st id="ST" editor="bool" />
+      <st id="GV8" editor="MODE" />
     </sts>
     <cmds>
       <sends />
@@ -10,6 +11,9 @@
         <cmd id="DISCOVER" />
         <cmd id="REMOVE_NOTICES_ALL" />
         <cmd id="UPDATE_PROFILE" />
+		<cmd id="OPERATION">
+			<p id="" editor="MODE" init="GV8"/>
+		</cmd>
 		<cmd id="DEBUG">
 			<p id="" editor="DEBUG" init="GVP"/>
 		</cmd>

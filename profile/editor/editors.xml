@@ -20,5 +20,8 @@
 	<editor id="DEBUG">
 		<range uom="25" subset="0,10,20,30,40,50" NLS="DBG" />
 	</editor>
+	<editor id="MODE">
+		<range uom="25" subset="0,1,2,3" NLS="MODE" />
+	</editor>
 
 </editors>

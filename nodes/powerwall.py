@@ -186,9 +186,13 @@ class Controller(polyinterface.Controller):
         LOGGER.info('set_logging_level: Setting log level to %d' % level)
         LOGGER.setLevel(level)
 
+    def set_operation_mode(self, mode=None):
+        LOGGER.info('set operation mode to ' + str(mode))
+
     commands = {
             'UPDATE_PROFILE': update_profile,
             'REMOVE_NOTICES_ALL': remove_notices_all,
+            'OPERATION': set_operation_mode,
             'DEBUG': set_logging_level,
             }
 

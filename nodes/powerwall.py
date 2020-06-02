@@ -83,6 +83,7 @@ class Controller(polyinterface.Controller):
         self.query_meters()
         self.query_operation()
         self.query_soe()
+        self.query_grid()
         self.force = False
 
     def longPoll(self):
@@ -92,6 +93,7 @@ class Controller(polyinterface.Controller):
         self.query_meters()
         self.query_operation()
         self.query_soe()
+        self.query_grid()
 
     # Log into the gateway and get a token
     def authenticate(self):
@@ -166,12 +168,38 @@ class Controller(polyinterface.Controller):
                 self.set_driver('BATLVL', jdata['percentage'])
 
         except Exception as e:
-            LOGGER.error('Operation query failure')
+            LOGGER.error('SOE query failure')
             LOGGER.error(e)
 
-    # TODO: /api/system_status/grid_status 
     def query_grid(self):
-        LOGGER.info('query grid status not implemented')
+        if not self.configured:
+            LOGGER.info('Skipping connection because we aren\'t configured yet.')
+            return
+
+        try: 
+            request = 'https://' + self.params.get('IP Address')
+            request += '/api/system_status/grid_status'
+
+            c = requests.get(request, verify=False)
+            jdata = c.json()
+            c.close()
+            LOGGER.debug(jdata)
+
+            if jdata == None:
+                LOGGER.error('Grid query returned no data')
+                return
+
+            if 'grid_status' in jdata:
+                if jdata['grid_status'] == 'SystemGridConnected':
+                    self.set_driver('GV9', 0)
+                elif jdata['grid_status'] == 'SystemIslandedActive':
+                    self.set_driver('GV9', 1)
+                elif jdata['grid_status'] == 'SystemTransitionToGrid':
+                    self.set_driver('GV9', 2)
+
+        except Exception as e:
+            LOGGER.error('Grid query failure')
+            LOGGER.error(e)
 
     def query_meters(self):
         # Query for the meters aggregates.  I.E. grid, battery, load, solar
@@ -214,7 +242,6 @@ class Controller(polyinterface.Controller):
         except Exception as e:
             LOGGER.error('gateway update failure')
             LOGGER.error(e)
-
 
 
     def query(self):
@@ -300,6 +327,7 @@ class Controller(polyinterface.Controller):
             {'driver': 'ST', 'value': 1, 'uom': 2},      # node server status
             {'driver': 'GV8', 'value': 0, 'uom': 25},    # Operation
             {'driver': 'BATLVL', 'value': 0, 'uom': 51}, # Charge status
+            {'driver': 'GV9', 'value': 0, 'uom': 25},    # Grid status
             ]
 
 

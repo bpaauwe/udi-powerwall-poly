@@ -5,6 +5,7 @@
       <st id="ST" editor="bool" />
       <st id="GV8" editor="MODE" />
       <st id="BATLVL" editor="LEVEL" />
+      <st id="GV9" editor="GRID" />
     </sts>
     <cmds>
       <sends />

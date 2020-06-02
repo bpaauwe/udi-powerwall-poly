@@ -26,4 +26,7 @@
 	<editor id="LEVEL">
 		<range uom="51" prec="3" />
 	</editor>
+	<editor id="GRID">
+		<range uom="25" subset="0,1,2" NLS="GRID" />
+	</editor>
 </editors>

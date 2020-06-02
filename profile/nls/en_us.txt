@@ -10,6 +10,7 @@ CMD-ctl-OPERATION-NAME = Operation Mode
 ST-ctl-ST-NAME = NodeServer Online
 ST-ctl-GV8-NAME = Operation Mode
 ST-ctl-BATLVL-NAME = Charge Status
+ST-ctl-GV9-NAME = Grid Status
 ST-ctl-CPW-NAME = Instant Power
 ST-ctl-CC-NAME = Total Current
 ST-ctl-CV-NAME = Average Voltage
@@ -36,3 +37,7 @@ MODE-0 = Self Consumption
 MODE-1 = Backup
 MODE-2 = Autonomous
 MODE-3 = Scheduler
+
+GRID-0 = Connected
+GRID-1 = Disconnected
+GRID-2 = Transitioning

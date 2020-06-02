@@ -22,14 +22,38 @@ The settings for this node are:
 
 #### Short Poll
    * How often to poll the PowerWall gateway (in seconds).
+
 #### Long Poll
+   * Not currently used.
 
 #### IP Address
    * Tesla Powerwall gateway IP address
 
+#### Serial Number
+   * Tesla Powerwall gateway serial number
+
+#### Password
+   * Tesla Powerwall gateway password
+
 ## Node substitution variables
-### Current condition node
+### Powerwall gateway node
  * sys.node.[address].ST      (Node sever online)
+ * sys.node.[address].GV8     (Current mode of operation)
+ * sys.node.[address].GV9     (Grid status)
+ * sys.node.[address].BATLVL  (Battery status)
+
+### Powerwall meter nodes
+ * sys.node.[address].CPW     (Instant power)
+ * sys.node.[address].GV0     (Instant reactive power)
+ * sys.node.[address].GV1     (Instant apparent power)
+ * sys.node.[address].GV2     (Frequency)
+ * sys.node.[address].GV3     (Energy exported)
+ * sys.node.[address].GV4     (Energy imported)
+ * sys.node.[address].CV      (Instant average voltage)
+ * sys.node.[address].CC      (Instant total current)
+ * sys.node.[address].GV5     (i a current)
+ * sys.node.[address].GV6     (i b current)
+ * sys.node.[address].GV7     (i c current)
 
 ## Requirements
 1. Polyglot V2.

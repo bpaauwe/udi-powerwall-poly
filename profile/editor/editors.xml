@@ -3,10 +3,10 @@
         <range uom="2" subset="0,1" />
     </editor>
     <editor id="POWER">
-        <range uom="73" prec="3" />
+        <range uom="73" min="-2147483647" max="2147483647" prec="3" />
     </editor>
     <editor id="ENERGY">
-        <range uom="119" prec="3" />
+        <range uom="119" min="-2147483647" max="2147483647" prec="3" />
     </editor>
     <editor id="FREQENCY">
         <range uom="90" min="0" max="120" prec="1" />
@@ -24,7 +24,7 @@
 		<range uom="25" subset="0,1,2,3" NLS="MODE" />
 	</editor>
 	<editor id="LEVEL">
-		<range uom="51" prec="3" />
+		<range uom="51" min="0" max="100" prec="3" />
 	</editor>
 	<editor id="GRID">
 		<range uom="25" subset="0,1,2" NLS="GRID" />

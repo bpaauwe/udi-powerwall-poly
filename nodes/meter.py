@@ -34,9 +34,9 @@ class MeterNode(polyinterface.Node):
             {'driver': 'CPW', 'value': 0, 'uom': 73},   # instant power
             {'driver': 'GV0', 'value': 0, 'uom': 73},   # reactive power
             {'driver': 'GV1', 'value': 0, 'uom': 73},   # apparent power
-            {'driver': 'GV2', 'value': 0, 'uom': 90},   # frequency
-            {'driver': 'GV3', 'value': 0, 'uom': 119},  # exported
-            {'driver': 'GV4', 'value': 0, 'uom': 119},  # imported
+            {'driver': 'GV2', 'value': 0, 'uom': 119},  # exported
+            {'driver': 'GV3', 'value': 0, 'uom': 119},  # imported
+            {'driver': 'GV4', 'value': 0, 'uom': 90},   # frequency
             {'driver': 'CV', 'value': 0, 'uom': 72},    # average volts
             {'driver': 'CC', 'value': 0, 'uom': 1},     # total current
             {'driver': 'GV5', 'value': 0, 'uom': 1},    # i_a current

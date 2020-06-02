@@ -81,6 +81,8 @@ class Controller(polyinterface.Controller):
 
         # Do an initial query to get filled in as soon as possible
         self.query_meters()
+        self.query_operation()
+        self.query_soe()
         self.force = False
 
     def longPoll(self):
@@ -88,6 +90,8 @@ class Controller(polyinterface.Controller):
 
     def shortPoll(self):
         self.query_meters()
+        self.query_operation()
+        self.query_soe()
 
     # Log into the gateway and get a token
     def authenticate(self):
@@ -108,6 +112,66 @@ class Controller(polyinterface.Controller):
             self.token = jdata['token']
             LOGGER.info('Authenticated')
         
+    def query_operation(self):
+        # needs to be authenticated
+        if not self.configured:
+            LOGGER.info('Skipping connection because we aren\'t configured yet.')
+            return
+        try: 
+            request = 'https://' + self.params.get('IP Address')
+            request += '/api/operation'
+
+            c = requests.get(request, headers={'Authorization':self.token}, verify=False)
+            jdata = c.json()
+            c.close()
+            LOGGER.debug(jdata)
+
+            if jdata == None:
+                LOGGER.error('Operation query returned no data')
+                return
+
+            if 'mode' in jdata:
+                if jdata['mode'] == 'self_consumption':
+                    self.set_driver('GV8', 0)
+                elif jdata['mode'] == 'backup':
+                    self.set_driver('GV8', 1)
+                elif jdata['mode'] == 'autonomous':
+                    self.set_driver('GV8', 2)
+                elif jdata['mode'] == 'scheduler':
+                    self.set_driver('GV8', 3)
+
+        except Exception as e:
+            LOGGER.error('Operation query failure')
+            LOGGER.error(e)
+
+    def query_soe(self):
+        if not self.configured:
+            LOGGER.info('Skipping connection because we aren\'t configured yet.')
+            return
+
+        try: 
+            request = 'https://' + self.params.get('IP Address')
+            request += '/api/system_status/soe'
+
+            c = requests.get(request, verify=False)
+            jdata = c.json()
+            c.close()
+            LOGGER.debug(jdata)
+
+            if jdata == None:
+                LOGGER.error('SOE query returned no data')
+                return
+
+            if 'percentage' in jdata:
+                self.set_driver('BATLVL', jdata['percentage'])
+
+        except Exception as e:
+            LOGGER.error('Operation query failure')
+            LOGGER.error(e)
+
+    # TODO: /api/system_status/grid_status 
+    def query_grid(self):
+        LOGGER.info('query grid status not implemented')
 
     def query_meters(self):
         # Query for the meters aggregates.  I.E. grid, battery, load, solar
@@ -151,37 +215,6 @@ class Controller(polyinterface.Controller):
             LOGGER.error('gateway update failure')
             LOGGER.error(e)
 
-        # needs to be authenticated
-        try: 
-            request = 'https://' + self.params.get('IP Address')
-            request += '/api/operation'
-
-            c = requests.get(request, headers={'Authorization':self.token}, verify=False)
-            jdata = c.json()
-            c.close()
-            LOGGER.debug(jdata)
-
-            if jdata == None:
-                LOGGER.error('Operation query returned no data')
-                return
-
-            if 'mode' in jdata:
-                if jdata['mode'] == 'self_consumption':
-                    self.set_driver('GV8', 0)
-                elif jdata['mode'] == 'backup':
-                    self.set_driver('GV8', 1)
-                elif jdata['mode'] == 'autonomous':
-                    self.set_driver('GV8', 2)
-                elif jdata['mode'] == 'scheduler':
-                    self.set_driver('GV8', 3)
-
-
-        except Exception as e:
-            LOGGER.error('Operation query failure')
-            LOGGER.error(e)
-
-        # TODO: /api/system_status/soe (state of charge)
-        # TODO: /api/system_status/grid_status 
 
 
     def query(self):

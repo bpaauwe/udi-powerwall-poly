@@ -32,13 +32,26 @@ class Controller(polyinterface.Controller):
         self.address = 'pw'
         self.primary = self.address
         self.configured = False
+        self.token = ''
         self.force = True
 
         self.params = node_funcs.NSParameters([{
-            'name': 'IP Address',
-            'default': 'set me',
-            'isRequired': True,
-            'notice': 'Tesla gateway IP address must be set',
+                'name': 'IP Address',
+                'default': 'set me',
+                'isRequired': True,
+                'notice': 'Tesla gateway IP address must be set',
+            },
+            {
+                'name': 'Serial Number',
+                'default': 'set me',
+                'isRequired': True,
+                'notice': 'Tesla gateway serial number must be set',
+            },
+            {
+                'name': 'Password',
+                'default': 'set me',
+                'isRequired': True,
+                'notice': 'Tesla gateway password must be set',
             },
             ])
 
@@ -63,6 +76,7 @@ class Controller(polyinterface.Controller):
         LOGGER.info('Starting node server')
         self.check_params()
         self.discover()
+        self.authenticate()
         LOGGER.info('Node server started')
 
         # Do an initial query to get filled in as soon as possible
@@ -74,6 +88,26 @@ class Controller(polyinterface.Controller):
 
     def shortPoll(self):
         self.query_meters()
+
+    # Log into the gateway and get a token
+    def authenticate(self):
+        if not self.configured:
+            LOGGER.info('Skipping authentication because we aren\'t configured yet.')
+            return
+
+        request = 'https://' + self.params.get('IP Address')
+        request += '/api/login/Basic'
+
+        c = requests.post(request, verify=False, json={'username':'', 'password':self.params.get('Password'), 'force_sm_off':false})
+
+        jdata = c.json()
+        c.close()
+        LOGGER.debug(jdata)
+
+        if 'token' in jdata:
+            self.token = jdata['token']
+            LOGGER.info('Authenticated')
+        
 
     def query_meters(self):
         # Query for the meters aggregates.  I.E. grid, battery, load, solar
@@ -88,36 +122,67 @@ class Controller(polyinterface.Controller):
             request = 'https://' + self.params.get('IP Address')
             request += '/api/meters/aggregates'
 
-            c = requests.get(request)
+            c = requests.get(request, verify=False)
             jdata = c.json()
             c.close()
             LOGGER.debug(jdata)
 
             if jdata == None:
-                LOGGER.error('Current condition query returned no data')
+                LOGGER.error('Meter query returned no data')
                 return
 
-            data = jdata[0]
-
             # FIXME: call update_node in the actual of each type
-            if 'site' in data:
-                self.nodes['pw_grid'].update_node(data['site'])
-            if 'battery' in data:
-                self.nodes['pw_battery'].update_node(data['battery'])
-            if 'load' in data:
-                self.nodes['pw_load'].update_node(data['load'])
-            if 'solar' in data:
-                self.nodes['pw_solar'].update_node(data['solar'])
-            if 'busway' in data:
-                self.nodes['pw_busway'].update_node(data['busway'])
-            if 'frequency' in data:
-                self.nodes['pw_frequency'].update_node(data['frequency'])
-            if 'generator' in data:
-                self.nodes['pw_generator'].update_node(data['generator'])
+            if 'site' in jdata:
+                self.nodes['pw_grid'].update_node(jdata['site'])
+            if 'battery' in jdata:
+                self.nodes['pw_battery'].update_node(jdata['battery'])
+            if 'load' in jdata:
+                self.nodes['pw_load'].update_node(jdata['load'])
+            if 'solar' in jdata:
+                self.nodes['pw_solar'].update_node(jdata['solar'])
+            if 'busway' in jdata:
+                self.nodes['pw_busway'].update_node(jdata['busway'])
+            if 'frequency' in jdata:
+                self.nodes['pw_frequency'].update_node(jdata['frequency'])
+            if 'generator' in jdata:
+                self.nodes['pw_generator'].update_node(jdata['generator'])
 
         except Exception as e:
             LOGGER.error('gateway update failure')
             LOGGER.error(e)
+
+        # needs to be authenticated
+        try: 
+            request = 'https://' + self.params.get('IP Address')
+            request += '/api/operation'
+
+            c = requests.get(request, headers={'Authorization':self.token}, verify=False)
+            jdata = c.json()
+            c.close()
+            LOGGER.debug(jdata)
+
+            if jdata == None:
+                LOGGER.error('Operation query returned no data')
+                return
+
+            if 'mode' in jdata:
+                if jdata['mode'] == 'self_consumption':
+                    self.set_driver('GV8', 0)
+                elif jdata['mode'] == 'backup':
+                    self.set_driver('GV8', 1)
+                elif jdata['mode'] == 'autonomous':
+                    self.set_driver('GV8', 2)
+                elif jdata['mode'] == 'scheduler':
+                    self.set_driver('GV8', 3)
+
+
+        except Exception as e:
+            LOGGER.error('Operation query failure')
+            LOGGER.error(e)
+
+        # TODO: /api/system_status/soe (state of charge)
+        # TODO: /api/system_status/grid_status 
+
 
     def query(self):
         for node in self.nodes:
@@ -200,6 +265,7 @@ class Controller(polyinterface.Controller):
     # controller node.
     drivers = [
             {'driver': 'ST', 'value': 1, 'uom': 2},   # node server status
+            {'driver': 'GV8', 'value': 0, 'uom': 25}, # Operation
             ]
 
 

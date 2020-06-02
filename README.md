@@ -70,5 +70,5 @@ The nodeserver keeps track of the version number and when a profile rebuild is n
 
 # Release Notes
 
-- 0.0.1 08/20/2019
+- 1.0.0 06/02/2020
    - Initial version published to github for testing

@@ -264,8 +264,9 @@ class Controller(polyinterface.Controller):
     # For this node server, all of the info is available in the single
     # controller node.
     drivers = [
-            {'driver': 'ST', 'value': 1, 'uom': 2},   # node server status
-            {'driver': 'GV8', 'value': 0, 'uom': 25}, # Operation
+            {'driver': 'ST', 'value': 1, 'uom': 2},      # node server status
+            {'driver': 'GV8', 'value': 0, 'uom': 25},    # Operation
+            {'driver': 'BATLVL', 'value': 0, 'uom': 51}, # Charge status
             ]
 
 

@@ -23,5 +23,7 @@
 	<editor id="MODE">
 		<range uom="25" subset="0,1,2,3" NLS="MODE" />
 	</editor>
-
+	<editor id="LEVEL">
+		<range uom="51" prec="3" />
+	</editor>
 </editors>

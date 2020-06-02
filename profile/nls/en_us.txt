@@ -9,6 +9,7 @@ CMD-ctl-OPERATION-NAME = Operation Mode
 
 ST-ctl-ST-NAME = NodeServer Online
 ST-ctl-GV8-NAME = Operation Mode
+ST-ctl-BATLVL-NAME = Charge Status
 ST-ctl-CPW-NAME = Instant Power
 ST-ctl-CC-NAME = Total Current
 ST-ctl-CV-NAME = Average Voltage

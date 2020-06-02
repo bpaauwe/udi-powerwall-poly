@@ -34,6 +34,7 @@ class Controller(polyinterface.Controller):
         self.configured = False
         self.token = ''
         self.force = True
+        self.reserve = 0
 
         self.params = node_funcs.NSParameters([{
                 'name': 'IP Address',
@@ -141,6 +142,8 @@ class Controller(polyinterface.Controller):
                     self.set_driver('GV8', 2)
                 elif jdata['mode'] == 'scheduler':
                     self.set_driver('GV8', 3)
+            if 'backup_reserve_percent' in jdata:
+                self.reserve = jdata['backup_reserve_percent']
 
         except Exception as e:
             LOGGER.error('Operation query failure')
@@ -267,6 +270,37 @@ class Controller(polyinterface.Controller):
         node = meter.MeterNode(self, self.address, 'pw_generator', 'Generator')
         self.addNode(node)
 
+    def set_operation(self, mode):
+        if not self.configured:
+            LOGGER.info('Skipping connection because we aren\'t configured yet.')
+            return
+
+        if mode == 0:
+            operation = 'self_consumption'
+        elif mode == 1:
+            operation = 'backup'
+        elif mode == 2:
+            operation = 'autonomous'
+        elif mode == 3:
+            operation = 'scheduler'
+        else:
+            LOGGER.error('Invalid operation mode specified: ' + str(mode))
+            return
+
+        try: 
+            request = 'https://' + self.params.get('IP Address')
+            request += '/api/operation'
+
+            c = requests.post(request, 
+                    json={'mode':operation,'backup_reserve_percent':self.reserve},
+                    headers={'Authorization':self.token}, verify=False)
+            jdata = c.json()
+            c.close()
+            LOGGER.debug(jdata)
+        except Exception as e:
+            LOGGER.error('gateway update failure')
+            LOGGER.error(e)
+
     def delete(self):
         LOGGER.info('Removing node server')
 
@@ -313,6 +347,8 @@ class Controller(polyinterface.Controller):
 
     def set_operation_mode(self, mode=None):
         LOGGER.info('set operation mode to ' + str(mode))
+        if 'value' in mode:
+            self.set_operation(mode['value'])
 
     commands = {
             'UPDATE_PROFILE': update_profile,
